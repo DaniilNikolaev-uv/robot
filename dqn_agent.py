@@ -148,7 +148,11 @@ class DQNAgent:
         )
 
     def load(self, path: str, map_location: str | None = None) -> None:
-        checkpoint = torch.load(path, map_location=map_location or self.device)
+        checkpoint = torch.load(
+            path,
+            map_location=map_location or self.device,
+            weights_only=True,
+        )
         self.policy_net.load_state_dict(checkpoint["model_state_dict"])
         self.target_net.load_state_dict(self.policy_net.state_dict())
         self.epsilon = float(checkpoint.get("epsilon", self.config.epsilon_end))
